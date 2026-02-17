@@ -1,4 +1,113 @@
 /* ============================================================
+   HERO CANVAS — particles
+   ============================================================ */
+#hero-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* ============================================================
+   LISTEN BUTTON — TTS
+   ============================================================ */
+.listen-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  margin-bottom: 24px;
+  background: rgba(201, 168, 76, 0.08);
+  border: 1px solid rgba(201, 168, 76, 0.3);
+  border-radius: 100px;
+  padding: 10px 22px;
+  cursor: pointer;
+  font-family: var(--font-sans);
+  font-size: 13px;
+  letter-spacing: 0.14em;
+  color: var(--gold-light);
+  transition: background 0.25s, border-color 0.25s, transform 0.2s;
+}
+
+.listen-btn:hover {
+  background: rgba(201, 168, 76, 0.15);
+  border-color: rgba(201, 168, 76, 0.6);
+  transform: translateY(-1px);
+}
+
+.listen-btn__icon {
+  font-size: 11px;
+  transition: transform 0.2s;
+}
+
+.listen-btn.playing {
+  background: rgba(201, 168, 76, 0.18);
+  border-color: var(--gold);
+  color: var(--gold-light);
+}
+
+.listen-btn.playing .listen-btn__icon {
+  display: inline-block;
+  animation: pulse-icon 1.2s ease-in-out infinite;
+}
+
+@keyframes pulse-icon {
+  0%, 100% { opacity: 1;   transform: scale(1); }
+  50%       { opacity: 0.4; transform: scale(0.8); }
+}
+
+/* ============================================================
+   AMBIENT AUDIO TOGGLE
+   ============================================================ */
+.ambient-toggle {
+  position: fixed;
+  top: 22px;
+  left: 28px;
+  z-index: 999;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  background: rgba(20, 16, 30, 0.75);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(201, 168, 76, 0.3);
+  border-radius: 100px;
+  padding: 9px 20px;
+  cursor: pointer;
+  font-family: var(--font-sans);
+  font-size: 13px;
+  letter-spacing: 0.12em;
+  color: var(--text-muted);
+  transition: border-color 0.25s, box-shadow 0.25s, color 0.25s, transform 0.18s ease;
+}
+
+.ambient-toggle:hover {
+  border-color: rgba(201, 168, 76, 0.55);
+  color: var(--gold-light);
+}
+
+.ambient-toggle.playing {
+  border-color: rgba(201, 168, 76, 0.55);
+  color: var(--gold-light);
+  box-shadow: 0 0 20px rgba(201, 168, 76, 0.15);
+}
+
+.ambient-toggle__icon {
+  font-size: 15px;
+  display: inline-block;
+}
+
+.ambient-toggle.playing .ambient-toggle__icon {
+  animation: note-bounce 1.6s ease-in-out infinite;
+}
+
+@keyframes note-bounce {
+  0%, 100% { transform: translateY(0);   opacity: 1; }
+  50%       { transform: translateY(-3px); opacity: 0.6; }
+}
+
+/* ============================================================
    LANGUAGE TOGGLE
    ============================================================ */
 .lang-toggle {

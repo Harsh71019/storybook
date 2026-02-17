@@ -11,6 +11,12 @@
 </head>
 <body>
 
+  <!-- AMBIENT AUDIO TOGGLE -->
+  <button class="ambient-toggle" id="ambientToggle" aria-label="Toggle ambient sound">
+    <span class="ambient-toggle__icon">♪</span>
+    <span class="ambient-toggle__label">Unmute</span>
+  </button>
+
   <!-- LANGUAGE TOGGLE -->
   <button class="lang-toggle" id="langToggle" aria-label="Toggle language">
     <span class="lang-toggle__active" id="langLabel">EN</span>
@@ -20,6 +26,7 @@
 
   <!-- HERO -->
   <section class="hero">
+    <canvas id="hero-canvas"></canvas>
     <div class="hero__overlay"></div>
     <div class="hero__content">
       <p class="hero__eyebrow" data-i18n="hero.eyebrow">A Sacred Legend</p>
@@ -100,7 +107,11 @@
         <div class="chapter__text-col">
           <div class="chapter__num">01</div>
           <h2 class="chapter__title" data-i18n="ch1.title">The Race with Garuda</h2>
-          <div class="chapter__body">
+          <button class="listen-btn" data-listen="ch1">
+            <span class="listen-btn__icon">▶</span>
+            <span class="listen-btn__label">Listen</span>
+          </button>
+          <div class="chapter__body" id="ch1-body">
             <p data-i18n="ch1.p1">
               Krishna sent Garuda — the king of birds and lord of the skies — to the Gandhamadan mountain with a message: invite Hanuman to Dwarka. Garuda flew at his absolute peak, the wind bending around his mighty wings.
             </p>
@@ -123,7 +134,11 @@
         <div class="chapter__text-col">
           <div class="chapter__num">02</div>
           <h2 class="chapter__title" data-i18n="ch2.title">The Encounter with Sudarshan Chakra</h2>
-          <div class="chapter__body">
+          <button class="listen-btn" data-listen="ch2">
+            <span class="listen-btn__icon">▶</span>
+            <span class="listen-btn__label">Listen</span>
+          </button>
+          <div class="chapter__body" id="ch2-body">
             <p data-i18n="ch2.p1">
               Before Hanuman's arrival, Krishna had commanded Sudarshan Chakra to guard the palace gate — to stop anyone from entering without permission. The Chakra spun with blazing ferocity, confident that no force in existence could pass through it.
             </p>
@@ -156,7 +171,11 @@
         <div class="chapter__text-col">
           <div class="chapter__num">03</div>
           <h2 class="chapter__title" data-i18n="ch3.title">The Question to Satyabhama</h2>
-          <div class="chapter__body">
+          <button class="listen-btn" data-listen="ch3">
+            <span class="listen-btn__icon">▶</span>
+            <span class="listen-btn__label">Listen</span>
+          </button>
+          <div class="chapter__body" id="ch3-body">
             <p data-i18n="ch3.p1">
               Inside the palace, Krishna had arranged one final test. He asked Satyabhama to dress as Goddess Sita, knowing that Hanuman — the eternal devotee of Ram — would surely be struck by her beauty. Satyabhama adorned herself in her finest silk and jewellery, certain that even a monkey sage would be dazzled.
             </p>
@@ -197,7 +216,11 @@
         <div class="conclusion__img-wrap">
           <img src="images/3.png" alt="Garuda and Chakra bowing to Hanuman" class="conclusion__img" />
         </div>
-        <div class="conclusion__text">
+        <div class="conclusion__text" id="concl-body">
+          <button class="listen-btn" data-listen="concl">
+            <span class="listen-btn__icon">▶</span>
+            <span class="listen-btn__label">Listen</span>
+          </button>
           <p data-i18n="concl.p1">
             After all three had been humbled, Lord Krishna revealed his divine form — radiant, infinite, all-knowing. He spoke to them gently, without reproach:
           </p>

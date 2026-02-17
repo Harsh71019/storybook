@@ -1,4 +1,238 @@
 // ============================================================
+// AUDIO — ambient + chapter sound effects
+// ============================================================
+
+const ambient = new Audio('audio/ambient.mp3');
+ambient.loop   = true;
+ambient.volume = 0.22;
+
+const sfx = {
+  whoosh: new Audio('audio/whoosh.mp3'),
+  chakra: new Audio('audio/chakra.mp3'),
+  chime:  new Audio('audio/chime.mp3'),
+};
+sfx.whoosh.volume = 0.55;
+sfx.chakra.volume = 0.5;
+sfx.chime.volume  = 0.5;
+
+// Track which chapter sfx have already fired
+const sfxPlayed = { 1: false, 2: false, 3: false, concl: false };
+
+function playSfx(name) {
+  const s = sfx[name];
+  if (!s) return;
+  s.currentTime = 0;
+  s.play().catch(() => {});
+}
+
+// Ambient toggle button
+const ambientBtn = document.getElementById('ambientToggle');
+let ambientOn = false;
+
+ambientBtn.addEventListener('click', () => {
+  if (ambientOn) {
+    ambient.pause();
+    ambientOn = false;
+    ambientBtn.classList.remove('playing');
+    ambientBtn.querySelector('.ambient-toggle__label').textContent = 'Unmute';
+  } else {
+    ambient.play().catch(() => {});
+    ambientOn = true;
+    ambientBtn.classList.add('playing');
+    ambientBtn.querySelector('.ambient-toggle__label').textContent = 'Mute';
+  }
+});
+
+// Chapter sound effects — triggered by scroll
+function initChapterSfx() {
+  const chapterSfxMap = { '1': 'whoosh', '2': 'chakra', '3': 'chime' };
+
+  const sfxObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (!entry.isIntersecting) return;
+      const ch = entry.target.dataset.chapter;
+      if (ch && !sfxPlayed[ch]) {
+        sfxPlayed[ch] = true;
+        setTimeout(() => playSfx(chapterSfxMap[ch]), 300);
+      }
+    });
+  }, { threshold: 0.3 });
+
+  document.querySelectorAll('.chapter').forEach(c => sfxObserver.observe(c));
+
+  // Chime for conclusion
+  const conclusionEl = document.querySelector('.conclusion');
+  if (conclusionEl) {
+    const conclObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting || sfxPlayed.concl) return;
+        sfxPlayed.concl = true;
+        setTimeout(() => playSfx('chime'), 300);
+      });
+    }, { threshold: 0.25 });
+    conclObserver.observe(conclusionEl);
+  }
+}
+
+initChapterSfx();
+
+// ============================================================
+// GOLDEN PARTICLE SYSTEM
+// ============================================================
+
+const canvas = document.getElementById('hero-canvas');
+const ctx    = canvas.getContext('2d');
+
+function resizeCanvas() {
+  canvas.width  = canvas.offsetWidth;
+  canvas.height = canvas.offsetHeight;
+}
+
+const GOLD_COLORS = ['#C9A84C', '#E8C96A', '#E07B3A', '#F0D080', '#B8962E'];
+
+class Particle {
+  constructor(initial = false) {
+    this.init(initial);
+  }
+
+  init(initial = false) {
+    this.x         = Math.random() * canvas.width;
+    this.y         = initial ? Math.random() * canvas.height : canvas.height + 8;
+    this.size      = Math.random() * 2.2 + 0.4;
+    this.speedY    = Math.random() * 0.55 + 0.18;
+    this.drift     = Math.random() * Math.PI * 2;
+    this.driftSpd  = Math.random() * 0.018 + 0.004;
+    this.opacity   = Math.random() * 0.5 + 0.1;
+    this.opDelta   = (Math.random() * 0.006 + 0.002) * (Math.random() < 0.5 ? 1 : -1);
+    this.color     = GOLD_COLORS[Math.floor(Math.random() * GOLD_COLORS.length)];
+  }
+
+  update() {
+    this.drift   += this.driftSpd;
+    this.x       += Math.sin(this.drift) * 0.45;
+    this.y       -= this.speedY;
+    this.opacity += this.opDelta;
+
+    if (this.opacity >= 0.65) this.opDelta = -Math.abs(this.opDelta);
+    if (this.opacity <= 0.06) this.opDelta =  Math.abs(this.opDelta);
+    if (this.y < -6)          this.init();
+  }
+
+  draw() {
+    ctx.save();
+    ctx.globalAlpha = this.opacity;
+    ctx.fillStyle   = this.color;
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.restore();
+  }
+}
+
+const particles = Array.from({ length: 110 }, () => new Particle(true));
+
+function animateParticles() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  particles.forEach(p => { p.update(); p.draw(); });
+  requestAnimationFrame(animateParticles);
+}
+
+resizeCanvas();
+window.addEventListener('resize', resizeCanvas, { passive: true });
+animateParticles();
+
+
+// ============================================================
+// TTS — TEXT TO SPEECH
+// ============================================================
+
+let activeBtn = null;
+
+// Map button data-listen → element id to read from
+const listenTargets = {
+  ch1:   'ch1-body',
+  ch2:   'ch2-body',
+  ch3:   'ch3-body',
+  concl: 'concl-body',
+};
+
+function getVoice(lang) {
+  const voices = window.speechSynthesis.getVoices();
+  if (lang === 'hi') {
+    return (
+      voices.find(v => v.lang === 'hi-IN') ||
+      voices.find(v => v.lang.startsWith('hi')) ||
+      voices[0]
+    );
+  }
+  return (
+    voices.find(v => /Daniel|Google UK English Male|Alex|Arthur/i.test(v.name)) ||
+    voices.find(v => v.lang === 'en-GB') ||
+    voices.find(v => v.lang === 'en-US') ||
+    voices[0]
+  );
+}
+
+function stopSpeech() {
+  window.speechSynthesis.cancel();
+  if (activeBtn) {
+    activeBtn.classList.remove('playing');
+    activeBtn.querySelector('.listen-btn__icon').textContent  = '▶';
+    activeBtn.querySelector('.listen-btn__label').textContent = 'Listen';
+    activeBtn = null;
+  }
+}
+
+function startSpeech(text, btn) {
+  stopSpeech();
+
+  activeBtn = btn;
+  btn.classList.add('playing');
+  btn.querySelector('.listen-btn__icon').textContent  = '■';
+  btn.querySelector('.listen-btn__label').textContent = 'Stop';
+
+  const utter    = new SpeechSynthesisUtterance(text);
+  utter.rate     = 0.88;
+  utter.pitch    = 0.92;
+  utter.volume   = 1;
+  utter.voice    = getVoice(currentLang);
+  utter.onend    = stopSpeech;
+  utter.onerror  = stopSpeech;
+
+  // Chrome bug: long utterances get cut off — keep synthesis alive
+  const keepAlive = setInterval(() => {
+    if (!window.speechSynthesis.speaking) { clearInterval(keepAlive); return; }
+    window.speechSynthesis.pause();
+    window.speechSynthesis.resume();
+  }, 12000);
+
+  utter.onend = () => { clearInterval(keepAlive); stopSpeech(); };
+
+  window.speechSynthesis.speak(utter);
+}
+
+document.querySelectorAll('.listen-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    // Toggle off if already playing this button
+    if (activeBtn === btn) { stopSpeech(); return; }
+
+    const key    = btn.dataset.listen;
+    const target = document.getElementById(listenTargets[key]);
+    if (!target) return;
+
+    // Extract clean text (strip HTML tags)
+    const text = target.innerText.trim();
+    if (!text) return;
+
+    startSpeech(text, btn);
+  });
+});
+
+// Stop speech when language is toggled
+function onLangChange() { stopSpeech(); }
+
+
+// ============================================================
 // TRANSLATIONS
 // ============================================================
 
@@ -69,7 +303,7 @@ const translations = {
 
     'intro.label':       'पृष्ठभूमि',
     'intro.title':       'तीन अहंकार, एक सीख',
-    'intro.text':        'भगवान कृष्ण — विष्णु के अवतार — ने देखा कि उनके तीन अत्यंत निकटजन <em>अहंकार</em> के जाल में आ गए थे। उन्हें罚 देने के बजाय, उन्होंने एक सुंदर योजना बनाई — हनुमान को, जो सर्वश्रेष्ठ भक्त हैं, उस दर्पण के रूप में भेजा जो प्रत्येक के अभिमान को उनके सामने प्रतिबिंबित कर सके।',
+    'intro.text':        'भगवान कृष्ण — विष्णु के अवतार — ने देखा कि उनके तीन अत्यंत निकटजन <em>अहंकार</em> के जाल में आ गए थे। उन्हें दंड देने के बजाय, उन्होंने एक सुंदर योजना बनाई — हनुमान को, जो सर्वश्रेष्ठ भक्त हैं, उस दर्पण के रूप में भेजा जो प्रत्येक के अभिमान को उनके सामने प्रतिबिंबित कर सके।',
 
     'garuda.role':       'विष्णु का दिव्य वाहन',
     'garuda.ego':        '"सृष्टि में मुझसे तेज कोई नहीं उड़ सकता।"',
@@ -118,6 +352,7 @@ const translations = {
   }
 };
 
+
 // ============================================================
 // LANGUAGE TOGGLE
 // ============================================================
@@ -132,99 +367,85 @@ function applyTranslations(lang) {
     }
   });
 
-  // Toggle Hindi font class on body
   document.body.classList.toggle('lang-hi', lang === 'hi');
-
-  // Update toggle button labels
-  document.getElementById('langLabel').textContent  = lang === 'en' ? 'EN' : 'हिं';
-  document.getElementById('langOther').textContent  = lang === 'en' ? 'हिं' : 'EN';
-
-  // Update html lang attribute
+  document.getElementById('langLabel').textContent = lang === 'en' ? 'EN' : 'हिं';
+  document.getElementById('langOther').textContent = lang === 'en' ? 'हिं' : 'EN';
   document.documentElement.lang = lang === 'hi' ? 'hi' : 'en';
 }
 
 document.getElementById('langToggle').addEventListener('click', () => {
   currentLang = currentLang === 'en' ? 'hi' : 'en';
+  onLangChange();
+  applyTranslations(currentLang);
 
-  // Animate swap
   const btn = document.getElementById('langToggle');
   btn.style.transform = 'scale(0.92)';
   setTimeout(() => { btn.style.transform = ''; }, 180);
-
-  applyTranslations(currentLang);
 });
 
+
 // ============================================================
-// INTERSECTION OBSERVER — reveal animations
+// INTERSECTION OBSERVER — scroll reveal
 // ============================================================
 
-const observerOptions = {
+const observerOpts = {
   root: null,
   rootMargin: '0px 0px -80px 0px',
   threshold: 0.12
 };
 
-const observer = new IntersectionObserver((entries) => {
+const revealObserver = new IntersectionObserver((entries) => {
   entries.forEach(entry => {
     if (!entry.isIntersecting) return;
-    const el = entry.target;
+    const el    = entry.target;
     const delay = el.dataset.delay ? parseInt(el.dataset.delay) : 0;
-    setTimeout(() => { el.classList.add('visible'); }, delay);
-    observer.unobserve(el);
+    setTimeout(() => el.classList.add('visible'), delay);
+    revealObserver.unobserve(el);
   });
-}, observerOptions);
+}, observerOpts);
 
-document.querySelectorAll('.ego-card').forEach(card => observer.observe(card));
-document.querySelectorAll('.chapter').forEach(chapter => observer.observe(chapter));
+document.querySelectorAll('.ego-card').forEach(c => revealObserver.observe(c));
+document.querySelectorAll('.chapter').forEach(c => revealObserver.observe(c));
 
 document.querySelectorAll('.moral-card').forEach((card, i) => {
-  card.style.opacity = '0';
-  card.style.transform = 'translateY(28px)';
-  card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-
-  const mo = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (!entry.isIntersecting) return;
-      setTimeout(() => {
-        card.style.opacity = '1';
-        card.style.transform = 'translateY(0)';
-      }, i * 120);
+  card.style.cssText = 'opacity:0;transform:translateY(28px);transition:opacity .6s ease,transform .6s ease';
+  const mo = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (!e.isIntersecting) return;
+      setTimeout(() => { card.style.opacity = '1'; card.style.transform = 'translateY(0)'; }, i * 120);
       mo.unobserve(card);
     });
-  }, observerOptions);
+  }, observerOpts);
   mo.observe(card);
 });
 
 const conclusionScene = document.querySelector('.conclusion__scene');
 if (conclusionScene) {
-  conclusionScene.style.opacity = '0';
-  conclusionScene.style.transform = 'translateY(40px)';
-  conclusionScene.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
-
-  const co = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (!entry.isIntersecting) return;
+  conclusionScene.style.cssText = 'opacity:0;transform:translateY(40px);transition:opacity .8s ease,transform .8s ease';
+  const co = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (!e.isIntersecting) return;
       conclusionScene.style.opacity = '1';
       conclusionScene.style.transform = 'translateY(0)';
       co.unobserve(conclusionScene);
     });
-  }, observerOptions);
+  }, observerOpts);
   co.observe(conclusionScene);
 }
+
 
 // ============================================================
 // HERO PARALLAX
 // ============================================================
 
-const hero = document.querySelector('.hero');
-
+const heroEl = document.querySelector('.hero');
 window.addEventListener('scroll', () => {
-  const scrollY = window.scrollY;
-  if (hero && scrollY < window.innerHeight) {
-    const heroContent = hero.querySelector('.hero__content');
-    if (heroContent) {
-      heroContent.style.transform = `translateY(${scrollY * 0.18}px)`;
-      heroContent.style.opacity = 1 - (scrollY / (window.innerHeight * 0.7));
+  const sy = window.scrollY;
+  if (heroEl && sy < window.innerHeight) {
+    const hc = heroEl.querySelector('.hero__content');
+    if (hc) {
+      hc.style.transform = `translateY(${sy * 0.18}px)`;
+      hc.style.opacity   = String(1 - sy / (window.innerHeight * 0.7));
     }
   }
 }, { passive: true });
