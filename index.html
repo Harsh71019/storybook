@@ -6,77 +6,75 @@
   <title>Garv Haran — The Destruction of Ego</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Lato:wght@300;400&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Lato:wght@300;400&family=Tiro+Devanagari+Hindi:ital@0;1&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
+
+  <!-- LANGUAGE TOGGLE -->
+  <button class="lang-toggle" id="langToggle" aria-label="Toggle language">
+    <span class="lang-toggle__active" id="langLabel">EN</span>
+    <span class="lang-toggle__sep">|</span>
+    <span class="lang-toggle__other" id="langOther">हिं</span>
+  </button>
 
   <!-- HERO -->
   <section class="hero">
     <div class="hero__overlay"></div>
     <div class="hero__content">
-      <p class="hero__eyebrow">A Sacred Legend</p>
-      <h1 class="hero__title">Garv Haran</h1>
-      <p class="hero__subtitle">The Destruction of Ego</p>
-      <p class="hero__desc">How Lord Vishnu, through the humble devotion of Hanuman,<br>shattered the pride of his closest and most powerful associates.</p>
-      <a href="#story" class="hero__btn">Read the Story</a>
+      <p class="hero__eyebrow" data-i18n="hero.eyebrow">A Sacred Legend</p>
+      <h1 class="hero__title" data-i18n="hero.title">Garv Haran</h1>
+      <p class="hero__subtitle" data-i18n="hero.subtitle">The Destruction of Ego</p>
+      <p class="hero__desc" data-i18n="hero.desc">How Lord Vishnu, through the humble devotion of Hanuman,<br>shattered the pride of his closest and most powerful associates.</p>
+      <a href="#story" class="hero__btn" data-i18n="hero.btn">Read the Story</a>
     </div>
-    <div class="hero__scroll-hint">
-      <span></span>
-    </div>
+    <div class="hero__scroll-hint"><span></span></div>
   </section>
 
   <!-- INTRO -->
   <section class="intro" id="story">
     <div class="container">
-      <div class="section-label">The Setting</div>
-      <h2 class="section-title">Three Egos, One Lesson</h2>
-      <p class="intro__text">
+      <div class="section-label" data-i18n="intro.label">The Setting</div>
+      <h2 class="section-title" data-i18n="intro.title">Three Egos, One Lesson</h2>
+      <p class="intro__text" data-i18n="intro.text">
         Lord Krishna — an avatar of Vishnu — noticed that three beings closest to him had fallen into the trap of <em>ahankar</em> (ego). Rather than punish them, he devised a beautiful plan — to send Hanuman, the greatest devotee, as the mirror that would reflect their pride back at them.
       </p>
 
       <div class="ego-cards">
+
         <div class="ego-card" data-delay="0">
           <div class="ego-card__img-wrap">
-            <img src="images/garuda.jpg" alt="Garuda" class="ego-card__img" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" />
-            <div class="ego-card__placeholder" style="display:none">
-              <span>Garuda</span>
-            </div>
+            <img src="images/garud.png" alt="Garuda" class="ego-card__img" />
           </div>
           <div class="ego-card__body">
             <h3 class="ego-card__name">Garuda</h3>
-            <p class="ego-card__role">Divine Vehicle of Vishnu</p>
-            <p class="ego-card__ego">"No one in creation flies faster than me."</p>
+            <p class="ego-card__role" data-i18n="garuda.role">Divine Vehicle of Vishnu</p>
+            <p class="ego-card__ego" data-i18n="garuda.ego">"No one in creation flies faster than me."</p>
           </div>
         </div>
 
         <div class="ego-card" data-delay="120">
           <div class="ego-card__img-wrap">
-            <img src="images/sudarshan.jpg" alt="Sudarshan Chakra" class="ego-card__img" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" />
-            <div class="ego-card__placeholder" style="display:none">
-              <span>Sudarshan Chakra</span>
-            </div>
+            <img src="images/chakra.png" alt="Sudarshan Chakra" class="ego-card__img" />
           </div>
           <div class="ego-card__body">
-            <h3 class="ego-card__name">Sudarshan Chakra</h3>
-            <p class="ego-card__role">The Ultimate Divine Weapon</p>
-            <p class="ego-card__ego">"Nothing in existence can stop or withstand me."</p>
+            <h3 class="ego-card__name" data-i18n="sudarshan.name">Sudarshan Chakra</h3>
+            <p class="ego-card__role" data-i18n="sudarshan.role">The Ultimate Divine Weapon</p>
+            <p class="ego-card__ego" data-i18n="sudarshan.ego">"Nothing in existence can stop or withstand me."</p>
           </div>
         </div>
 
         <div class="ego-card" data-delay="240">
           <div class="ego-card__img-wrap">
-            <img src="images/satyabhama.jpg" alt="Satyabhama" class="ego-card__img" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" />
-            <div class="ego-card__placeholder" style="display:none">
-              <span>Satyabhama</span>
-            </div>
+            <img src="images/Satyabhama.png" alt="Satyabhama" class="ego-card__img" />
           </div>
           <div class="ego-card__body">
             <h3 class="ego-card__name">Satyabhama</h3>
-            <p class="ego-card__role">Queen & Wife of Lord Krishna</p>
-            <p class="ego-card__ego">"No woman in all three worlds is more beautiful than me."</p>
+            <p class="ego-card__role" data-i18n="satyabhama.role">Queen &amp; Wife of Lord Krishna</p>
+            <p class="ego-card__ego" data-i18n="satyabhama.ego">"No woman in all three worlds is more beautiful than me."</p>
           </div>
         </div>
+
       </div>
     </div>
   </section>
@@ -97,30 +95,24 @@
         <div class="chapter__img-col">
           <div class="chapter__img-wrap">
             <img src="images/1.png" alt="The Race with Garuda" class="chapter__img" />
-            <div class="chapter__img-placeholder" style="display:none">
-              <div class="chapter__img-placeholder-inner">
-                <p>Garuda vs Hanuman</p>
-                <span>Place your image here</span>
-              </div>
-            </div>
           </div>
         </div>
         <div class="chapter__text-col">
           <div class="chapter__num">01</div>
-          <h2 class="chapter__title">The Race with Garuda</h2>
+          <h2 class="chapter__title" data-i18n="ch1.title">The Race with Garuda</h2>
           <div class="chapter__body">
-            <p>
+            <p data-i18n="ch1.p1">
               Krishna sent Garuda — the king of birds and lord of the skies — to the Gandhamadan mountain with a message: invite Hanuman to Dwarka. Garuda flew at his absolute peak, the wind bending around his mighty wings.
             </p>
-            <p>
+            <p data-i18n="ch1.p2">
               He found Hanuman calmly sitting under a tree, chanting <em>"Rama… Rama… Rama…"</em> Garuda delivered the invitation. Hanuman simply nodded and said, <strong>"You go ahead. I will follow."</strong>
             </p>
-            <p>
+            <p data-i18n="ch1.p3">
               Garuda smirked inwardly — <em>an old monkey walking to Dwarka?</em> — and flew back with all his speed. But when he landed at the palace gates, his heart stopped. Hanuman was already there, seated serenely before Krishna, as if he had been waiting for hours.
             </p>
             <div class="chapter__moral">
-              <span class="chapter__moral-label">Ego shattered</span>
-              The pride of speed dissolved in an instant.
+              <span class="chapter__moral-label" data-i18n="ch1.moral-label">Ego shattered</span>
+              <span data-i18n="ch1.moral-text">The pride of speed dissolved in an instant.</span>
             </div>
           </div>
         </div>
@@ -130,32 +122,26 @@
       <article class="chapter chapter--right" data-chapter="2">
         <div class="chapter__text-col">
           <div class="chapter__num">02</div>
-          <h2 class="chapter__title">The Encounter with Sudarshan Chakra</h2>
+          <h2 class="chapter__title" data-i18n="ch2.title">The Encounter with Sudarshan Chakra</h2>
           <div class="chapter__body">
-            <p>
+            <p data-i18n="ch2.p1">
               Before Hanuman's arrival, Krishna had commanded Sudarshan Chakra to guard the palace gate — to stop anyone from entering without permission. The Chakra spun with blazing ferocity, confident that no force in existence could pass through it.
             </p>
-            <p>
+            <p data-i18n="ch2.p2">
               When Hanuman arrived and found the spinning discus blocking his path, he did not stop. He did not flinch. He simply reached out and <strong>caught the Sudarshan Chakra in his palm.</strong>
             </p>
-            <p>
+            <p data-i18n="ch2.p3">
               In some accounts, Hanuman placed the Chakra inside his cheek — the way one holds a betel nut — and walked right in. He then calmly walked up to Krishna and placed the Chakra at his feet. The most feared weapon in creation had been rendered a harmless trinket by Hanuman's devotion.
             </p>
             <div class="chapter__moral">
-              <span class="chapter__moral-label">Ego shattered</span>
-              The pride of invincible power crumbled to dust.
+              <span class="chapter__moral-label" data-i18n="ch2.moral-label">Ego shattered</span>
+              <span data-i18n="ch2.moral-text">The pride of invincible power crumbled to dust.</span>
             </div>
           </div>
         </div>
         <div class="chapter__img-col">
           <div class="chapter__img-wrap">
             <img src="images/2.png" alt="Sudarshan Chakra encounter" class="chapter__img" />
-            <div class="chapter__img-placeholder" style="display:none">
-              <div class="chapter__img-placeholder-inner">
-                <p>Hanuman & Sudarshan</p>
-                <span>Place your image here</span>
-              </div>
-            </div>
           </div>
         </div>
       </article>
@@ -164,34 +150,28 @@
       <article class="chapter chapter--left" data-chapter="3">
         <div class="chapter__img-col">
           <div class="chapter__img-wrap">
-            <img src="images/satyabhama-hanuman.jpg" alt="Satyabhama and Hanuman" class="chapter__img" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" />
-            <div class="chapter__img-placeholder" style="display:none">
-              <div class="chapter__img-placeholder-inner">
-                <p>Satyabhama & Hanuman</p>
-                <span>Place your image here</span>
-              </div>
-            </div>
+            <img src="images/4.png" alt="Satyabhama and Hanuman" class="chapter__img" />
           </div>
         </div>
         <div class="chapter__text-col">
           <div class="chapter__num">03</div>
-          <h2 class="chapter__title">The Question to Satyabhama</h2>
+          <h2 class="chapter__title" data-i18n="ch3.title">The Question to Satyabhama</h2>
           <div class="chapter__body">
-            <p>
+            <p data-i18n="ch3.p1">
               Inside the palace, Krishna had arranged one final test. He asked Satyabhama to dress as Goddess Sita, knowing that Hanuman — the eternal devotee of Ram — would surely be struck by her beauty. Satyabhama adorned herself in her finest silk and jewellery, certain that even a monkey sage would be dazzled.
             </p>
-            <p>
+            <p data-i18n="ch3.p2">
               When Hanuman entered, he immediately bowed to Krishna, seeing him as his Rama. Then he glanced toward Satyabhama. He paused. He tilted his head, genuinely puzzled, and asked with complete innocence:
             </p>
-            <blockquote class="chapter__quote">
+            <blockquote class="chapter__quote" data-i18n="ch3.quote">
               "My Lord… where is Mother Sita? And who is this <em>maidservant</em> sitting beside you?"
             </blockquote>
-            <p>
+            <p data-i18n="ch3.p3">
               The palace fell silent. Satyabhama's ornaments suddenly felt very heavy. She had dressed to be worshipped as a goddess — and had been seen as a servant. Not out of cruelty, but because Hanuman's heart held only one form of beauty: that of Mother Sita.
             </p>
             <div class="chapter__moral">
-              <span class="chapter__moral-label">Ego shattered</span>
-              The pride of beauty was extinguished by pure devotion.
+              <span class="chapter__moral-label" data-i18n="ch3.moral-label">Ego shattered</span>
+              <span data-i18n="ch3.moral-text">The pride of beauty was extinguished by pure devotion.</span>
             </div>
           </div>
         </div>
@@ -210,27 +190,21 @@
   <!-- CONCLUSION -->
   <section class="conclusion">
     <div class="container">
-      <div class="section-label">The Revelation</div>
-      <h2 class="section-title">Krishna's Teaching</h2>
+      <div class="section-label" data-i18n="concl.label">The Revelation</div>
+      <h2 class="section-title" data-i18n="concl.title">Krishna's Teaching</h2>
 
       <div class="conclusion__scene">
         <div class="conclusion__img-wrap">
           <img src="images/3.png" alt="Garuda and Chakra bowing to Hanuman" class="conclusion__img" />
-          <div class="conclusion__img-placeholder" style="display:none">
-            <div class="conclusion__img-placeholder-inner">
-              <p>Krishna & Hanuman</p>
-              <span>Place your image here</span>
-            </div>
-          </div>
         </div>
         <div class="conclusion__text">
-          <p>
+          <p data-i18n="concl.p1">
             After all three had been humbled, Lord Krishna revealed his divine form — radiant, infinite, all-knowing. He spoke to them gently, without reproach:
           </p>
-          <blockquote class="conclusion__quote">
+          <blockquote class="conclusion__quote" data-i18n="concl.quote">
             "Speed, power, and beauty — these are not yours. They are gifts I placed within you for my service. The moment you claimed them as your own and became proud of them, you forgot me. And in forgetting me, you lost the very source of your greatness."
           </blockquote>
-          <p>
+          <p data-i18n="concl.p2">
             Garuda bowed his mighty head. Sudarshan Chakra rested still at Krishna's feet. Satyabhama wept with gratitude. And Hanuman sat quietly in the corner, lost in the name of Ram, unaware that he had just been the instrument of one of the greatest divine lessons ever given.
           </p>
         </div>
@@ -240,18 +214,18 @@
       <div class="morals">
         <div class="moral-card">
           <div class="moral-card__icon">⚡</div>
-          <h3>Strength is Borrowed</h3>
-          <p>Every gift — speed, power, beauty, intelligence — comes from the Divine. Owning it as yours is the root of ego.</p>
+          <h3 data-i18n="moral1.title">Strength is Borrowed</h3>
+          <p data-i18n="moral1.text">Every gift — speed, power, beauty, intelligence — comes from the Divine. Owning it as yours is the root of ego.</p>
         </div>
         <div class="moral-card">
           <div class="moral-card__icon">🙏</div>
-          <h3>Devotion Transcends All</h3>
-          <p>Hanuman carried no pride. He was simply devoted. And that devotion made him untouchable by any weapon and unreachable by any creature.</p>
+          <h3 data-i18n="moral2.title">Devotion Transcends All</h3>
+          <p data-i18n="moral2.text">Hanuman carried no pride. He was simply devoted. And that devotion made him untouchable by any weapon and unreachable by any creature.</p>
         </div>
         <div class="moral-card">
           <div class="moral-card__icon">🪞</div>
-          <h3>God Uses Mirrors</h3>
-          <p>Krishna did not scold or punish. He held up a mirror — Hanuman — so that each could see their own ego reflected and dissolved.</p>
+          <h3 data-i18n="moral3.title">God Uses Mirrors</h3>
+          <p data-i18n="moral3.text">Krishna did not scold or punish. He held up a mirror — Hanuman — so that each could see their own ego reflected and dissolved.</p>
         </div>
       </div>
     </div>
@@ -261,7 +235,7 @@
   <footer class="footer">
     <div class="footer__inner">
       <p class="footer__om">ॐ नमो भगवते वासुदेवाय</p>
-      <p class="footer__sub">Garv Haran · A Sacred Legend of Humility</p>
+      <p class="footer__sub" data-i18n="footer.sub">Garv Haran · A Sacred Legend of Humility</p>
     </div>
   </footer>
 
